@@ -1,6 +1,17 @@
-# 🍔 Food Ordering App
+# 🍔 Food Ordering App — Full Stack RBAC Challenge
 
-A production-grade food ordering web application with **Role-Based Access Control (RBAC)** and **Country-Based Access Control**, built with **Next.js**, **NestJS**, **PostgreSQL**, and **Prisma ORM**.
+A production-grade food ordering web application with **Role-Based Access Control (RBAC)** and **Country-Based Relational Access Control (Re-BAC)**, built with **Next.js**, **NestJS**, **PostgreSQL**, and **Prisma ORM**.
+
+---
+
+## 🌐 Live Demo
+
+| | URL |
+|---|---|
+| **Frontend** | [food-ordering-app-rbac-one.vercel.app](https://food-ordering-app-rbac-one.vercel.app) |
+| **Backend API** | [food-ordering-api-2jsy.onrender.com/api](https://food-ordering-api-2jsy.onrender.com/api) |
+
+> **Note:** Backend is hosted on Render free tier — first request after idle may take ~30s to cold-start.
 
 ---
 
@@ -192,7 +203,25 @@ All endpoints are prefixed with `/api`.
 
 | Layer     | Technology                    |
 |-----------|-------------------------------|
-| Frontend  | Next.js 15, React 19, Tailwind CSS 3 |
-| Backend   | NestJS 11, Passport, JWT      |
-| Database  | PostgreSQL, Prisma ORM        |
+| Frontend  | Next.js 16, React 19, Tailwind CSS 3 |
+| Backend   | NestJS 11, Passport JWT, class-validator |
+| Database  | PostgreSQL, Prisma ORM v7     |
+| Auth      | JWT + RBAC (RolesGuard) + Re-BAC (CountryGuard) |
 | Language  | TypeScript (everywhere)       |
+| Deployment| Vercel (frontend), Render (backend), Neon (database) |
+
+---
+
+## 🏛️ Key Architecture Decisions
+
+1. **Dual Guard System** — `RolesGuard` enforces role-based permissions at the endpoint level; `CountryGuard` filters data at the service level based on user's assigned country
+2. **Prisma v7 Adapter Pattern** — Uses `@prisma/adapter-pg` for direct PostgreSQL connection management (Prisma v7 breaking change)
+3. **Stateless JWT Auth** — Token includes `role` and `country` claims, enabling guard decisions without extra DB queries
+4. **Next.js App Router** — Uses React Server Components architecture with client-side auth/cart context providers
+5. **Country-Based Data Isolation** — Restaurants, orders, and menu items are filtered server-side by user's country; ADMIN bypasses all country restrictions
+
+---
+
+## 📬 Postman Collection
+
+A complete Postman collection (`FoodOrderingApp.postman_collection.json`) is included in the repo root for API testing. It includes auto-token-save on login for seamless endpoint testing.
