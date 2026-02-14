@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import AuthGuard from '@/components/AuthGuard';
@@ -11,6 +11,14 @@ import { useAuth } from '@/context/AuthContext';
 import { formatCurrency } from '@/lib/permissions';
 
 export default function MenuPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center py-20"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div></div>}>
+      <MenuContent />
+    </Suspense>
+  );
+}
+
+function MenuContent() {
   const searchParams = useSearchParams();
   const restaurantId = searchParams.get('restaurantId');
   const router = useRouter();
